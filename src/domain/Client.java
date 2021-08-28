@@ -6,6 +6,7 @@
 package domain;
 
 import java.sql.ResultSet;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -38,46 +39,85 @@ public class Client implements GenericEntity{
         this.adress = adress;
         this.email = email;
     }
+
+    @Override
+    public String toString() {
+        return  name + " " + surname ;
+    }
+
+   
     
    
     @Override
     public String getTableName() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return "client";
     }
 
     @Override
     public String getColumnNamesForInsert() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return "name,surname,adress,email";
     }
 
     @Override
     public String getInsertValues() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+         
+        StringBuilder sb = new StringBuilder();
+        sb.append("'").append(name).append("', ")
+                .append("'").append(surname).append("', ")
+                .append("'").append(adress).append("', ")
+                .append("'").append(email).append("' ");
+                
+        System.out.println(sb.toString());
+        return sb.toString();
+    
     }
 
     @Override
     public void setId(Long id) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        this.id=id;
     }
 
     @Override
     public List<GenericEntity> getList(ResultSet rs) throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        List<GenericEntity> clients = new ArrayList<>();
+        while(rs.next()){
+           Client m = new Client();
+           
+          
+                m.setEmail(rs.getString("email"));
+                m.setId(rs.getLong("id"));
+                m.setName(rs.getString("name"));
+                m.setSurname(rs.getString("surname"));
+                m.setAdress(rs.getString("adress"));
+               
+              
+                
+                clients.add(m);
+        }
+        return clients;
     }
 
     @Override
     public String getJoinCondition() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return "";
     }
 
     @Override
     public String getUpdateValues() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+            StringBuilder sb = new StringBuilder();
+        
+        sb.append("name=").append("'").append(name).append("', ")
+            .append("surname=").append("'").append(surname).append("', ")
+            .append("email=").append("'").append(email).append("', ")
+                .append("adress=").append("'").append(adress).append("'")
+                ;
+        
+        return sb.toString();
     }
 
     @Override
     public String getObjectCase() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return "id="+id;
     }
 
     @Override

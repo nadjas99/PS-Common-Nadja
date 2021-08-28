@@ -7,6 +7,7 @@ package domain;
 
 
 import java.sql.ResultSet;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -14,15 +15,20 @@ import java.util.List;
  * @author Nadja
  */
 public class Photographer implements GenericEntity{
+
+    public Long getId() {
+        return id;
+    }
     
-    
+    private Long id;
     private String name;
     private String surname;
     private String username;
     private String password;
     
 
-    public Photographer(String name, String surname, String username, String password) {
+    public Photographer(String name, String surname, String username, String password,Long id) {
+        this.id=id;
         this.name = name;
         this.surname = surname;
         this.username = username;
@@ -34,7 +40,7 @@ public class Photographer implements GenericEntity{
 
     @Override
     public String getTableName() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return "photographer";
     }
 
     @Override
@@ -47,19 +53,16 @@ public class Photographer implements GenericEntity{
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
-    @Override
-    public void setId(Long id) {
+    
+    public void setId(int id) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
-    @Override
-    public List<GenericEntity> getList(ResultSet rs) throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
+    
 
     @Override
     public String getJoinCondition() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return "";
     }
 
     @Override
@@ -112,6 +115,26 @@ public class Photographer implements GenericEntity{
     @Override
     public String toString() {
         return "Photographer{" + "name=" + name + ", surname=" + surname + '}';
+    }
+
+    @Override
+    public void setId(Long id) {
+        this.id = id;
+    }
+      @Override
+    public List<GenericEntity> getList(ResultSet rs) throws Exception {
+        List<GenericEntity> photographers = new ArrayList<>();
+        while(rs.next()){
+            Photographer leader = new Photographer();
+            leader.setId(rs.getLong("id"));
+            leader.setUsername(rs.getString("username"));
+            leader.setSurname(rs.getString("surname"));
+            leader.setPassword(rs.getString("password"));
+            leader.setName(rs.getString("name"));
+            photographers.add(leader);
+        }
+        
+        return photographers;
     }
     
     

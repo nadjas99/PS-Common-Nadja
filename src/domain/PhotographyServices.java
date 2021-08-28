@@ -6,6 +6,7 @@
 package domain;
 
 import java.sql.ResultSet;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -16,15 +17,19 @@ public class PhotographyServices implements GenericEntity {
     private Long id;
     private String name;
     private double price;
+    private String description;
 
     public PhotographyServices() {
     }
 
-    public PhotographyServices(Long id, String name, double price) {
+    public PhotographyServices(Long id, String name, double price, String description) {
         this.id = id;
         this.name = name;
         this.price = price;
+        this.description = description;
     }
+
+   
 
     public Long getId() {
         return id;
@@ -52,8 +57,14 @@ public class PhotographyServices implements GenericEntity {
 
     @Override
     public String getTableName() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return "photographyservice";
     }
+
+    @Override
+    public String toString() {
+        return "PhotographyServices:" + name;
+    }
+    
 
     @Override
     public String getColumnNamesForInsert() {
@@ -67,12 +78,24 @@ public class PhotographyServices implements GenericEntity {
 
     @Override
     public List<GenericEntity> getList(ResultSet rs) throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+         List<GenericEntity> services = new ArrayList<>();
+        while(rs.next()){
+            PhotographyServices t = new PhotographyServices();
+                    t.setId(rs.getLong("id"));
+                    
+                    
+                    t.setName(rs.getString("name"));
+                    t.setPrice(rs.getDouble("price"));
+                    t.setDescription(rs.getString("description"));
+                   
+                    services.add(t);
+        }
+        return services;
     }
 
     @Override
     public String getJoinCondition() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return"";
     }
 
     @Override
@@ -88,6 +111,14 @@ public class PhotographyServices implements GenericEntity {
     @Override
     public String getSearchCase() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
     
 }
