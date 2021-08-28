@@ -6,6 +6,7 @@
 package domain;
 
 import java.sql.ResultSet;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -22,17 +23,24 @@ public class Reservation implements GenericEntity{
     //dodaj objekat paketa usluge kad napravis
     //i stavku rezervacije
     private List<ReservationDetail> reservationDetails;
+    private Client client;
+    private Photographer photographer;
 
     public Reservation() {
     }
+    
 
-    public Reservation(Long id, Date date, String place, double cost, List<ReservationDetail> reservationDetails) {
+    public Reservation(Long id, Date date, String place, double cost, List<ReservationDetail> reservationDetails, Client client, Photographer photographer) {
         this.id = id;
         this.date = date;
         this.place = place;
         this.cost = cost;
         this.reservationDetails = reservationDetails;
+        this.client = client;
+        this.photographer = photographer;
     }
+
+    
 
     public Long getId() {
         return id;
@@ -76,22 +84,48 @@ public class Reservation implements GenericEntity{
 
     @Override
     public String getTableName() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return "reservation";
     }
 
     @Override
     public String getColumnNamesForInsert() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return "id,idClient,idPhotographer,date,cost,place";
     }
 
     @Override
     public String getInsertValues() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+           StringBuilder sb = new StringBuilder();
+        java.sql.Date date1 = new java.sql.Date(date.getTime());
+        
+
+     
+        sb.append(id).append(",")
+                .append(client.getId()).append(",")
+                .append(photographer.getId()).append(",'")
+                .append(date1).append("',")
+                .append(cost).append(",'")
+                .append(place).append("'");
+        return sb.toString();
     }
 
     @Override
     public List<GenericEntity> getList(ResultSet rs) throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        List<GenericEntity> reservations = new ArrayList<>();
+        while(rs.next()){
+             Reservation r = new Reservation();
+                r.setId(rs.getLong("id"));
+                r.setDate(rs.getDate("date"));
+                r.setCost(rs.getDouble("cost"));
+                Photographer ph=new Photographer();
+                ph.setId(rs.getLong("idPhotographer"));
+                Client c=new Client();
+                c.setId(rs.getLong("idClient"));
+                r.setClient(c);
+                r.setPhotographer(ph);
+                r.setPlace(rs.getString("place"));
+                reservations.add(r);
+        }
+        return reservations;
     }
 
     @Override
@@ -101,7 +135,16 @@ public class Reservation implements GenericEntity{
 
     @Override
     public String getUpdateValues() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        StringBuilder sb = new StringBuilder();
+       
+        java.sql.Date date1 = new java.sql.Date(date.getTime());
+      
+       
+        sb.append("place=").append("'").append(place).append("', ")
+                .append("cost=").append(cost).append(", ")
+                 .append("date=").append(date1);
+        
+        return sb.toString();
     }
 
     @Override
@@ -112,6 +155,22 @@ public class Reservation implements GenericEntity{
     @Override
     public String getSearchCase() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    public Client getClient() {
+        return client;
+    }
+
+    public void setClient(Client client) {
+        this.client = client;
+    }
+
+    public Photographer getPhotographer() {
+        return photographer;
+    }
+
+    public void setPhotographer(Photographer photographer) {
+        this.photographer = photographer;
     }
 
    

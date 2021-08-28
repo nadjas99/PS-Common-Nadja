@@ -6,6 +6,7 @@
 package domain;
 
 import java.sql.ResultSet;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -15,20 +16,31 @@ import java.util.List;
 public class ReservationDetail implements GenericEntity{
     
     private Long id;
+    private Reservation reservation;
     private double cost;
     private PhotographyServices service;
+
+    public ReservationDetail(Long id, Reservation reservation, double cost, PhotographyServices service) {
+        this.id = id;
+        this.reservation = reservation;
+        this.cost = cost;
+        this.service = service;
+    }
+
+    public ReservationDetail() {
+    }
     
     
     
 
     @Override
     public String getTableName() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return "reservationdetail"; //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
     public String getColumnNamesForInsert() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return "id,idReservation,idPhotographyService,cost"; //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
@@ -38,32 +50,75 @@ public class ReservationDetail implements GenericEntity{
 
     @Override
     public void setId(Long id) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        this.id=id;//To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
     public List<GenericEntity> getList(ResultSet rs) throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+          List<GenericEntity> details = new ArrayList<>();
+        while(rs.next()){
+            ReservationDetail t = new ReservationDetail();
+                    t.setId(rs.getLong("id"));
+                    Reservation r = new Reservation();
+                    r.setId(rs.getLong("idReservation"));
+                    t.setReservation(r);
+                   PhotographyServices phs=new PhotographyServices();
+                   phs.setId(rs.getLong("idPhotographyService"));
+                   t.setService(phs);
+                   t.setCost(rs.getDouble("cost"));
+                    details.add(t);
+        }
+        return details;
     }
 
     @Override
     public String getJoinCondition() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return ""; //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
     public String getUpdateValues() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+       StringBuilder sb = new StringBuilder();
+      
+       
+        sb.append("cost=").append(cost);
+        
+        return sb.toString(); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
     public String getObjectCase() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+         System.out.println(reservation.getId());
+        return "id="+id+" and idReservation="+reservation.getId();
     }
 
     @Override
     public String getSearchCase() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    public Reservation getReservation() {
+        return reservation;
+    }
+
+    public void setReservation(Reservation reservation) {
+        this.reservation = reservation;
+    }
+
+    public double getCost() {
+        return cost;
+    }
+
+    public void setCost(double cost) {
+        this.cost = cost;
+    }
+
+    public PhotographyServices getService() {
+        return service;
+    }
+
+    public void setService(PhotographyServices service) {
+        this.service = service;
     }
     
 }
