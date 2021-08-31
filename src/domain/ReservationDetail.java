@@ -45,7 +45,13 @@ public class ReservationDetail implements GenericEntity{
 
     @Override
     public String getInsertValues() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+       StringBuilder sb = new StringBuilder();
+       
+       sb.append(id).append(", ")
+                .append(reservation.getId()).append(", ")
+                .append(service.getId()).append(", ").append(cost);
+       
+       return sb.toString();
     }
 
     @Override

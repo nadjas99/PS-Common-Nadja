@@ -122,7 +122,7 @@ public class Client implements GenericEntity{
 
     @Override
     public String getSearchCase() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+      return "id="+id;
     }
 
     public String getName() {

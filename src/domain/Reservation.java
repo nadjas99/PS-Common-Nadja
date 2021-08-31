@@ -27,6 +27,7 @@ public class Reservation implements GenericEntity{
     private Photographer photographer;
 
     public Reservation() {
+        reservationDetails=new ArrayList<>();
     }
     
 
@@ -99,7 +100,7 @@ public class Reservation implements GenericEntity{
         
 
      
-        sb.append(id).append(",")
+                 sb.append(id).append(",")
                 .append(client.getId()).append(",")
                 .append(photographer.getId()).append(",'")
                 .append(date1).append("',")
@@ -130,7 +131,7 @@ public class Reservation implements GenericEntity{
 
     @Override
     public String getJoinCondition() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return "";
     }
 
     @Override
@@ -172,6 +173,13 @@ public class Reservation implements GenericEntity{
     public void setPhotographer(Photographer photographer) {
         this.photographer = photographer;
     }
+
+    @Override
+    public String toString() {
+        return "Reservation{" + "date=" + date + '}';
+    }
+    
+    
 
    
 
