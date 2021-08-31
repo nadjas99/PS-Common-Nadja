@@ -8,6 +8,7 @@ package domain;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 /**
  *
@@ -126,5 +127,43 @@ public class ReservationDetail implements GenericEntity{
     public void setService(PhotographyServices service) {
         this.service = service;
     }
+
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 71 * hash + Objects.hashCode(this.id);
+        hash = 71 * hash + Objects.hashCode(this.reservation);
+        hash = 71 * hash + (int) (Double.doubleToLongBits(this.cost) ^ (Double.doubleToLongBits(this.cost) >>> 32));
+        hash = 71 * hash + Objects.hashCode(this.service);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final ReservationDetail other = (ReservationDetail) obj;
+        if (Double.doubleToLongBits(this.cost) != Double.doubleToLongBits(other.cost)) {
+            return false;
+        }
+        if (!Objects.equals(this.id, other.id)) {
+            return false;
+        }
+        if (!Objects.equals(this.reservation, other.reservation)) {
+            return false;
+        }
+        if (!Objects.equals(this.service, other.service)) {
+            return false;
+        }
+        return true;
+    }
+    
     
 }

@@ -138,19 +138,19 @@ public class Reservation implements GenericEntity{
     public String getUpdateValues() {
         StringBuilder sb = new StringBuilder();
        
-        java.sql.Date date1 = new java.sql.Date(date.getTime());
+      java.sql.Date date1 = new java.sql.Date(date.getTime());
       
        
         sb.append("place=").append("'").append(place).append("', ")
                 .append("cost=").append(cost).append(", ")
-                 .append("date=").append(date1);
+                 .append("date=").append("'").append(date1).append("'");
         
         return sb.toString();
     }
 
     @Override
     public String getObjectCase() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+       return "id="+id;
     }
 
     @Override
