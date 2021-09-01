@@ -18,6 +18,7 @@ public class PhotographyServices implements GenericEntity {
     private String name;
     private double price;
     private String description;
+    
 
     public PhotographyServices() {
     }
